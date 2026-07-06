@@ -18,8 +18,7 @@ export const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ data, is
   return (
     <div 
       id="certificate-container" 
-      className={`relative w-full max-w-[1000px] aspect-[1.414/1] bg-[#0B1220] ${!isPrinting ? 'bg-gradient-to-br from-[#0B1220] to-[#1E293B] shadow-2xl' : ''} text-white p-6 md:p-12 flex flex-col items-center justify-between overflow-hidden mx-auto`}
-      style={isPrinting ? { width: '1000px', height: '707px', maxWidth: 'none', transform: 'scale(1)', transformOrigin: 'top left' } : {}}
+      className={`relative w-full max-w-[1000px] aspect-[1.414/1] bg-[#0B1220] text-white p-6 md:p-12 flex flex-col items-center justify-between overflow-hidden mx-auto ${!isPrinting ? 'bg-gradient-to-br from-[#0B1220] to-[#1E293B] shadow-2xl' : 'print-certificate'}`}
     >
       {/* Background Texture/Pattern */}
       {!isPrinting && <div className="absolute inset-0 opacity-5 certificate-pattern"></div>}
@@ -67,7 +66,7 @@ export const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ data, is
 
         <p className="text-base md:text-lg text-gray-400 italic mb-2 md:mb-4">Has successfully demonstrated mastery in</p>
         
-        <div className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text mb-4 md:mb-8" style={{ backgroundImage: 'linear-gradient(90deg, #6968A6, #CF9893)' }}>
+        <div className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text mb-4 md:mb-8 bg-gradient-to-r from-[#6968A6] to-[#CF9893]">
           {data.courseTitle}
         </div>
 
@@ -103,7 +102,7 @@ export const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ data, is
 
         <div className="text-center w-24 md:w-40">
            <div className="mb-2 h-8 md:h-10 flex items-end justify-center">
-             <span className="text-xl md:text-2xl text-white opacity-80" style={{ fontFamily: 'cursive' }}>SkillVerse</span>
+             <span className="text-xl md:text-2xl text-white opacity-80 font-handwriting">SkillVerse</span>
            </div>
            <div className="w-full border-t border-[#6968A6]/50 pt-2">
               <p className="text-[10px] md:text-xs font-bold uppercase text-gray-500 tracking-wider">Platform Director</p>
