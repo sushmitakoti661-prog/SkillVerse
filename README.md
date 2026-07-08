@@ -13,7 +13,7 @@
 
 ## 📖 Overview
 
-SkillVerse combines structured learning, real interview preparation, gamification, analytics, certifications, and beautiful UX to simulate a **real SaaS product**, not just a demo app. 
+SkillVerse combines structured learning, real interview preparation, gamification, analytics, certifications, and beautiful UX to simulate a **real SaaS product**, not just a demo app.
 
 It is built to demonstrate **real-world product thinking**, combining UX psychology, frontend architecture, user engagement strategies, and career-oriented learning. This project goes beyond tutorials and focuses on **how modern learning platforms are actually designed**.
 
@@ -71,6 +71,7 @@ It is built to demonstrate **real-world product thinking**, combining UX psychol
 ### 🔐 Production-Grade Authentication
 
 Replaced basic local storage with a highly secure, scalable **Firebase Authentication** system:
+
 - Supports Email/Password, Google, and GitHub Sign In.
 - Strict password validation (12+ chars, special chars, no dictionary passwords).
 - Verification Wall (requires email verification before dashboard access).
@@ -189,11 +190,12 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 
 ## 👩‍💻 Author
 
-**Manisa Nayak**
+### Manisa Nayak
 
 🎓 Student | Frontend Developer | UI/UX Enthusiast
 
 Passionate about:
+
 - Frontend Architecture
 - User Experience (UI/UX)
 - Full Stack Development
@@ -205,4 +207,4 @@ Passionate about:
 
 ---
 
-### ⭐ If you found this project interesting, consider giving it a Star!
+### ⭐ If you found this project interesting, consider giving it a Star
