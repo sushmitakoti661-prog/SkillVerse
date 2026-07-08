@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
@@ -14,118 +13,92 @@ import { CertificationsList } from './components/CertificationsList';
 import { CareerMode } from './components/CareerMode';
 import { Onboarding } from './components/Onboarding';
 import { CredentialVerification } from './components/CredentialVerification';
-import { storageService } from './services/storageService';
-import { User } from './types';
-
 import { DocumentationPage } from './components/DocumentationPage';
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuth';
+import { ProtectedRoute } from './guards/ProtectedRoute';
+import { storageService } from './services/storageService'; // Will clean up storageService next
 
-function App() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+const AppRoutes = () => {
+  const { user, appUser, logout } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
-    const storedUser = storageService.getUser();
-    if (storedUser) {
-      setUser(storedUser);
-      // Ensure theme is applied on load
-      if (storedUser.settings.theme === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        document.documentElement.classList.add('dark');
-      }
-      
-      // Check onboarding status
-      if (!storedUser.settings.onboardingCompleted) {
+     if (appUser && !appUser.settings.onboardingCompleted) {
          setShowOnboarding(true);
-      }
-    }
-    setLoading(false);
-  }, []);
+     } else {
+         setShowOnboarding(false);
+     }
+  }, [appUser]);
 
-  const handleLogin = (newUser: User) => {
-    setUser(newUser);
-    setShowAuth(false);
-    
-    // Check onboarding for new login
-    if (!newUser.settings.onboardingCompleted) {
-        setShowOnboarding(true);
-    }
+  // Handle local mock update for settings changes until full firestore migration
+  const handleUpdateUser = (updatedUser: any) => {
+     // In a full migration, this would call a firestore update function
+     // For now, it satisfies the prop requirement for Settings component
   };
 
-  const handleLogout = () => {
-    storageService.logout();
-    setUser(null);
-    setShowAuth(false);
-    setShowOnboarding(false);
-  };
-
-  const handleUpdateUser = (updatedUser: User) => {
-    setUser(updatedUser);
-  };
-
-  const handleOnboardingComplete = (updatedUser: User) => {
-      setUser(updatedUser);
+  const handleOnboardingComplete = (updatedUser: any) => {
+      // In a full migration, this updates the user document in firestore
       setShowOnboarding(false);
   };
 
-  if (loading) return null;
+  const handleLogout = async () => {
+      await logout();
+      setShowAuth(false);
+  };
 
   return (
-    <HashRouter>
       <Routes>
         <Route path="/docs" element={<DocumentationPage />} />
         <Route path="/credential/:token" element={<CredentialVerification />} />
+        
+        {/* Verification Wall */}
+        <Route path="/verify-email" element={
+            user && (!user.emailVerified && user.providerData[0]?.providerId === "password") ? 
+               <Auth /> : <Navigate to="/" replace />
+        } />
+
         <Route path="/*" element={
           !user && !showAuth ? (
             <LandingPage onGetStarted={() => setShowAuth(true)} />
           ) : !user && showAuth ? (
-            <Auth onLogin={handleLogin} />
-          ) : showOnboarding && user ? (
-            <Onboarding user={user} onComplete={handleOnboardingComplete} />
+            <Auth />
+          ) : showOnboarding && appUser ? (
+            <ProtectedRoute requireVerification={false}>
+               <Onboarding user={appUser} onComplete={handleOnboardingComplete} />
+            </ProtectedRoute>
           ) : (
-            <Layout user={user!} onLogout={handleLogout}>
-              <Routes>
-                <Route 
-                  path="/" 
-                  element={<Dashboard user={user} />} 
-                />
-                <Route 
-                  path="/courses" 
-                  element={<CoursesList />} 
-                />
-                <Route 
-                  path="/career" 
-                  element={<CareerMode />} 
-                />
-                <Route 
-                  path="/certifications" 
-                  element={<CertificationsList />} 
-                />
-                <Route 
-                  path="/settings" 
-                  element={<Settings user={user} onUpdateUser={handleUpdateUser} onLogout={handleLogout} />} 
-                />
-                <Route 
-                  path="/category/:id" 
-                  element={<CategoryView />} 
-                />
-                <Route 
-                  path="/course/:id" 
-                  element={<CourseView />} 
-                />
-                <Route 
-                  path="/certificate/:id" 
-                  element={<Certificate />} 
-                />
-                <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
-            </Layout>
+            <ProtectedRoute>
+              {appUser && (
+                  <Layout user={appUser} onLogout={handleLogout}>
+                    <Routes>
+                      <Route path="/" element={<Dashboard user={appUser} />} />
+                      <Route path="/courses" element={<CoursesList />} />
+                      <Route path="/career" element={<CareerMode />} />
+                      <Route path="/certifications" element={<CertificationsList />} />
+                      <Route path="/settings" element={<Settings user={appUser} onUpdateUser={handleUpdateUser} onLogout={handleLogout} />} />
+                      <Route path="/category/:id" element={<CategoryView />} />
+                      <Route path="/course/:id" element={<CourseView />} />
+                      <Route path="/certificate/:id" element={<Certificate />} />
+                      <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                  </Layout>
+              )}
+            </ProtectedRoute>
           )
         } />
       </Routes>
-    </HashRouter>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+       <HashRouter>
+          <AppRoutes />
+       </HashRouter>
+    </AuthProvider>
   );
 }
 

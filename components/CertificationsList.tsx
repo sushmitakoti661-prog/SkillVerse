@@ -4,6 +4,7 @@ import { Award, Download, CheckCircle, Link as LinkIcon } from 'lucide-react';
 import { COURSES } from '../constants';
 import { Course } from '../types';
 import { storageService } from '../services/storageService';
+import { useAuth } from '../hooks/useAuth';
 
 const BadgeCard: React.FC<{ course: Course, progress: any, user: any }> = ({ course, progress, user }) => {
   const [copied, setCopied] = useState(false);
@@ -71,9 +72,9 @@ const BadgeCard: React.FC<{ course: Course, progress: any, user: any }> = ({ cou
 };
 
 export const CertificationsList: React.FC = () => {
+  const { appUser: user } = useAuth();
   const progress = storageService.getAllProgress();
   const passedCourses = progress.filter(p => p.passed);
-  const user = storageService.getUser();
 
   if (!user) return null;
 

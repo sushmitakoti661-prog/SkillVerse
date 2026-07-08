@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Award, CheckCircle, XCircle, RefreshCcw, Download } from 'lucide-react';
 import { COURSES } from '../constants';
 import { storageService } from '../services/storageService';
+import { useAuth } from '../hooks/useAuth';
 import { Course } from '../types';
 import { AIAssistant } from './AIAssistant';
 
@@ -10,7 +11,7 @@ export const CourseView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const course = COURSES.find(c => c.id === id);
-  const user = storageService.getUser();
+  const { appUser: user } = useAuth();
   const settings = user?.settings;
   
   const [activeTab, setActiveTab] = useState<'learn' | 'quiz'>('learn');

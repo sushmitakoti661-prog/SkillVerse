@@ -3,14 +3,17 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Printer, CheckCircle, Loader2, Link as LinkIcon, Award } from 'lucide-react';
 import { COURSES } from '../constants';
 import { storageService } from '../services/storageService';
+import { useAuth } from '../hooks/useAuth';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { CertificateDisplay, CertificateData } from './CertificateDisplay';
 
 export const Certificate: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { appUser: user } = useAuth();
+  const componentRef = useRef<HTMLDivElement>(null);
   const course = COURSES.find(c => c.id === id);
-  const user = storageService.getUser();
   const progress = storageService.getProgress(id || '');
 
   if (!course || !user || !progress || !progress.passed) {
