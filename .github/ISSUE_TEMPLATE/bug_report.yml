@@ -2,7 +2,6 @@ name: 🐞 Bug Report
 description: Report an issue, unexpected behavior, or crash in SkillVerse
 title: "[BUG]: <Short, descriptive title>"
 labels: ["bug", "triage"]
-assignees: []
 body:
   - type: markdown
     attributes:

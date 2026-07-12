@@ -2,7 +2,6 @@ name: ♿ Accessibility Improvement
 description: Improve ARIA labels, semantic HTML, or keyboard navigation
 title: "[A11Y]: <Short, descriptive title>"
 labels: ["a11y", "enhancement"]
-assignees: []
 body:
   - type: textarea
     id: a11y_issue

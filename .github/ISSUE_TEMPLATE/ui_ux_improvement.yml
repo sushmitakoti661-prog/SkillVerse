@@ -2,7 +2,6 @@ name: 🎨 UI / UX Improvement
 description: Propose improvements to Tailwind CSS, Animations, or Responsive Design
 title: "[UI/UX]: <Short, descriptive title>"
 labels: ["ui-ux", "tailwind", "enhancement"]
-assignees: []
 body:
   - type: markdown
     attributes:
