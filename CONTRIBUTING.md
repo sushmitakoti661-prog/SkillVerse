@@ -83,6 +83,8 @@ Copy the `.env.example` file to a new file named `.env` and fill in your Firebas
 cp .env.example .env
 ```
 
+The application reads Firebase configuration from the environment variables defined in `.env` using Vite (`import.meta.env`). Ensure all required Firebase variables are populated before running the project locally.
+
 ### 4. Run development server
 
 ```bash
