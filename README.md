@@ -179,7 +179,7 @@ Generates professional certificates upon course completion. Features a user-frie
 
 ```bash
 git clone https://github.com/Khushi1310-nayak/SkillVerse.git
-cd skillverse
+cd SkillVerse
 ```
 
 ## 2. Install dependencies
@@ -188,7 +188,26 @@ cd skillverse
 npm install
 ```
 
-## 3. Start the development server
+## 3. Configure environment variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Fill in the following Firebase credentials from your Firebase project:
+
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+
+If you plan to use AI features, also configure the required Gemini/OpenRouter API credentials.
+
+## 4. Start the development server
 
 ```bash
 npm run dev
